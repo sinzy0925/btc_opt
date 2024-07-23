@@ -1,3 +1,6 @@
+git add .
+git commit -m "commit"
+git push
 
 …or create a new repository on the command line
 echo "# btc_opt" >> README.md
