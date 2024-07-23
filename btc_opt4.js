@@ -691,6 +691,7 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
           
           lineCount++;
           
+          
           if(      j == 0 && i ==0){
             lineCnt.cntP00 = lineCount;
           }else if(j == 0 && i ==1){
