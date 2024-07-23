@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "playwright": "^1.45.0"
+  },
+  "dependencies": {
+    "@line/bot-sdk": "^8.0.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.19.2"
+  }
+}

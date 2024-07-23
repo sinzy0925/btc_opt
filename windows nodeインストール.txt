@@ -1,0 +1,6 @@
+windows 
+playwrightインストール
+
+node
+npm i -D playwright
+npx playwright install
