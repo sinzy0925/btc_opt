@@ -514,7 +514,6 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
         await page.locator('#BTC-' + BTC_P + '000' + ' canvas').click({ position: {x: 600,y: 15} });
         await page.waitForTimeout(2000);
         //await page.locator('#BTC-' + BTC_P + '000' + '-P_checked div').first().click();
-        //await page.waitForTimeout(1000);
   
 
         
