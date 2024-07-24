@@ -58,18 +58,10 @@ arrDDMMYY[0] = '26-07-24';
 arrDDMMYY[1] = '02-08-24';
 
 let cnt = -1;
-/*
-let lineCnt = {cntC00:0 ,cntC01:0 ,cntC02:0 ,cntC03:0 ,cntC04:0 
-              ,cntC10:0 ,cntC11:0 ,cntC12:0 ,cntC13:0 ,cntC14:0 
-              ,cntP00:0 ,cntP01:0 ,cntP02:0 ,cntP03:0 ,cntP04:0 
-              ,cntP10:0 ,cntP11:0 ,cntP12:0 ,cntP13:0 ,cntP14:0
-            };
-*/
+
 let lineCnt = [];
 lineCnt[0] = [[0,0,0,0,0],[0,0,0,0,0]];//C          
 lineCnt[1] = [[0,0,0,0,0],[0,0,0,0,0]];//P      
-//console.error(lineCnt)
-
 
 let lineAlert = [];//5750;
 lineAlert[0] = [[0,0,0,0,0],[0,0,0,0,0]];//C 
@@ -211,40 +203,12 @@ for(let loop = 0 ; loop < 2 ; loop++){
       let dd = ddmmyy.split('-')[0]; 
       let mm = ddmmyy.split('-')[1]; 
       let yy = ddmmyy.split('-')[2];
-      if(      mm == '01'){
-        mm = 'JAN';
-      }else if(mm == '02'){
-        mm = 'FEB';
-      }else if(mm == '03'){
-        mm = 'MAR';
-      }else if(mm == '04'){
-        mm = 'APR';
-      }else if(mm == '05'){
-        mm = 'MAY';
-      }else if(mm == '06'){
-        mm = 'JUN';
-      }else if(mm == '07'){
-        mm = 'JUL';
-      }else if(mm == '08'){
-        mm = 'AUG';
-      }else if(mm == '09'){
-        mm = 'SEP';
-      }else if(mm == '10'){
-        mm = 'OCT';
-      }else if(mm == '11'){
-        mm = 'NOV';
-      }else if(mm == '12'){
-        mm = 'DEC';
-      }else{
-        mm = 'err'
-      }
+      let arrMM = [];
+      arrMM = ['','JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
+      mm = arrMM[parseInt(mm)];
       dd = parseInt(dd);
-
         
       await callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenri);
-      
-    
-
       
     }//for(let j = 0 ; j < arrDDMMYY.length ; j++){
   }//for(let l = 0 ; l < 10 ; l++){
@@ -262,44 +226,21 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
   let PATH = '';
   let meigara = '';
 
-  //権利行使価格
-  let kenri_c = 0 ;//call
-  let kenri_p = 0 ;//put
-  if(j == 0){
-    kenri_c = arrKenri[0][0] ;//call
-    kenri_p = arrKenri[0][1] ;//put
-  }else{
-    kenri_c = arrKenri[1][0] ;//call
-    kenri_p = arrKenri[1][1] ;//put
-  }
-  
-  
+  //権利行使価  
   let arrKenri_c = [];
   let arrKenri_p = [];
   if(j == 0){
-    arrKenri_c[0] = arrKenri[0][0][0] ;//call
-    arrKenri_c[1] = arrKenri[0][0][1] ;
-    arrKenri_c[2] = arrKenri[0][0][2] ;
-    arrKenri_c[3] = arrKenri[0][0][3] ;
-    arrKenri_c[4] = arrKenri[0][0][4] ;
-    
-    arrKenri_p[0] = arrKenri[1][0][0] ;//put
-    arrKenri_p[1] = arrKenri[1][0][1] ;
-    arrKenri_p[2] = arrKenri[1][0][2] ;  
-    arrKenri_p[3] = arrKenri[1][0][3] ;  
-    arrKenri_p[4] = arrKenri[1][0][4] ;  
+    for(let i = 0 ; i<=4 ; i++){
+      arrKenri_c[i] = arrKenri[0][0][i] ;//call
+      arrKenri_p[i] = arrKenri[1][0][i] ;//put
+    }
+
   }else{
-    arrKenri_c[0] = arrKenri[0][1][0] ;//call
-    arrKenri_c[1] = arrKenri[0][1][1] ;
-    arrKenri_c[2] = arrKenri[0][1][2] ;
-    arrKenri_c[3] = arrKenri[0][1][3] ;
-    arrKenri_c[4] = arrKenri[0][1][4] ;
-    
-    arrKenri_p[0] = arrKenri[1][1][0] ;//put
-    arrKenri_p[1] = arrKenri[1][1][1] ;
-    arrKenri_p[2] = arrKenri[1][1][2] ;  
-    arrKenri_p[3] = arrKenri[1][1][3] ;  
-    arrKenri_p[4] = arrKenri[1][1][4] ;  
+    for(let i = 0 ; i<=4 ; i++){
+      arrKenri_c[i] = arrKenri[0][1][i] ;//call
+      arrKenri_p[i] = arrKenri[1][1][i] ;//put
+    }
+
   }
   //権利行使価格
 
@@ -336,7 +277,7 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
       try{
 
         console.error("");        
-        console.error([meigara],["Start async function CALL["+i+']']);
+        console.error([meigara],["Start async function CALL["+i+']'],['#BTC-' + BTC_C + '000']);
       
         await page.waitForTimeout(500);
         await page.locator('#BTC-' + BTC_C + '000' + ' canvas').click({ position: {x: 200,y: 15} });
@@ -404,29 +345,6 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
         let lineCount = 0;
         lineCount = lineCnt[0][j][i]
 
-        /*
-        if(      j == 0 && i == 0){
-          lineCount = lineCnt.cntC00
-        }else if(j == 0 && i == 1){
-          lineCount = lineCnt.cntC01
-        }else if(j == 0 && i == 2){
-          lineCount = lineCnt.cntC02
-        }else if(j == 0 && i == 3){
-          lineCount = lineCnt.cntC03
-        }else if(j == 0 && i == 4){
-          lineCount = lineCnt.cntC04
-        }else if(j == 1 && i == 0){
-          lineCount = lineCnt.cntC10
-        }else if(j == 1 && i == 1){
-          lineCount = lineCnt.cntC11
-        }else if(j == 1 && i == 2){
-          lineCount = lineCnt.cntC12
-        }else if(j == 1 && i == 3){
-          lineCount = lineCnt.cntC13
-        }else if(j == 1 && i == 4){
-          lineCount = lineCnt.cntC14
-        }
-        */
     
         if(sell > lineAlert[0][j][i] && lineCount < 5){
           let linemsg = '[SELL Alert]>' + lineAlert[0][j][i] + '\n\n'
@@ -444,29 +362,6 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
           
           lineCount++;
           lineCnt[0][j][i] = lineCount;
-          /*
-          if(      j == 0 && i ==0){
-            lineCnt.cntC00 = lineCount;
-          }else if(j == 0 && i ==1){
-            lineCnt.cntC01 = lineCount;
-          }else if(j == 0 && i ==2){
-            lineCnt.cntC02 = lineCount;
-          }else if(j == 0 && i ==3){
-            lineCnt.cntC03 = lineCount;
-          }else if(j == 0 && i ==4){
-            lineCnt.cntC04 = lineCount;
-          }else if(j == 1 && i ==0){
-            lineCnt.cntC10 = lineCount;
-          }else if(j == 1 && i ==1){
-            lineCnt.cntC11 = lineCount;
-          }else if(j == 1 && i ==2){
-            lineCnt.cntC12 = lineCount;
-          }else if(j == 1 && i ==3){
-            lineCnt.cntC13 = lineCount;
-          }else if(j == 1 && i ==4){
-            lineCnt.cntC14 = lineCount;
-          }
-          */
         }
 
         console.error([meigara],['Alert'],lineAlert[0][j][i]
@@ -475,12 +370,6 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
 
         let resC1 = resC.split(',')
         console.error([resC1[10]],[resC1[3]],resC1[5],[resC1[7]],[resC1[8]],[resC1[9]],[resC1[0]],[resC1[1]]);
-
-
-
-
-      
-
 
       } catch(e) {
           console.error( 'err : ' + e.message );
@@ -497,20 +386,14 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
     let BTC_P_line = 'BTC-Options\n' + arrDDMMYY[j] + '\n-' + arrKenri_p[i] + '000[P]';
     
     meigara = 'P'
-            + arrDDMMYY[j].split('-')[2]  
-            + arrDDMMYY[j].split('-')[1]
-            + arrDDMMYY[j].split('-')[0]
-            + '-' + arrKenri_p[i];
-  /*
-    if(i == 2){
-      meigara = 'P' + meigara + 'a' + j;
-    }else{
-      meigara = 'P' + meigara;
-    }
-  */
+        + arrDDMMYY[j].split('-')[2]  
+        + arrDDMMYY[j].split('-')[1]
+        + arrDDMMYY[j].split('-')[0]
+        + '-' + arrKenri_p[i];
+
     PATH = urlpath//'../Dropbox/Attachments/' 
-         + meigara
-         + '.html';
+        + meigara
+        + '.html';
      
 
     //put側をクリックできるか確認
@@ -520,7 +403,7 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
       try{
 
         console.error("");        
-        console.error([meigara],["Start async function PUT["+i+']']);
+        console.error([meigara],["Start async function PUT["+i+']'],['#BTC-' + BTC_P + '000']);
       
         await page.waitForTimeout(500);
         await page.locator('#BTC-' + BTC_P + '000' + ' canvas').click({ position: {x: 600,y: 15} });
@@ -591,29 +474,6 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
 
         let lineCount = 0;
         lineCount = lineCnt[1][j][i]
-        /*
-        if(      j == 0 && i == 0){
-          lineCount = lineCnt.cntP00
-        }else if(j == 0 && i == 1){
-          lineCount = lineCnt.cntP01
-        }else if(j == 0 && i == 2){
-          lineCount = lineCnt.cntP02
-        }else if(j == 0 && i == 3){
-          lineCount = lineCnt.cntP03
-        }else if(j == 0 && i == 4){
-          lineCount = lineCnt.cntP04
-        }else if(j == 1 && i == 0){
-          lineCount = lineCnt.cntP10
-        }else if(j == 1 && i == 1){
-          lineCount = lineCnt.cntP11
-        }else if(j == 1 && i == 2){
-          lineCount = lineCnt.cntP12
-        }else if(j == 1 && i == 3){
-          lineCount = lineCnt.cntP13
-        }else if(j == 1 && i == 4){
-          lineCount = lineCnt.cntP14
-        }
-          */
 
         if(sell > lineAlert[1][j][i] && lineCount < 5){
           let linemsg = '[SELL Alert]>' + lineAlert[1][j][i] + '\n\n'
@@ -632,29 +492,6 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
           lineCount++;
           lineCnt[1][j][i] = lineCount;
           
-          /*
-          if(      j == 0 && i ==0){
-            lineCnt.cntP00 = lineCount;
-          }else if(j == 0 && i ==1){
-            lineCnt.cntP01 = lineCount;
-          }else if(j == 0 && i ==2){
-            lineCnt.cntP02 = lineCount;
-          }else if(j == 0 && i ==3){
-            lineCnt.cntP03 = lineCount;
-          }else if(j == 0 && i ==4){
-            lineCnt.cntP04 = lineCount;
-          }else if(j == 1 && i ==0){
-            lineCnt.cntP10 = lineCount;
-          }else if(j == 1 && i ==1){
-            lineCnt.cntP11 = lineCount;
-          }else if(j == 1 && i ==2){
-            lineCnt.cntP12 = lineCount;
-          }else if(j == 1 && i ==3){
-            lineCnt.cntP13 = lineCount;
-          }else if(j == 1 && i ==4){
-            lineCnt.cntP14 = lineCount;
-          }
-          */
         }
 
         console.error([meigara],['Alert'],lineAlert[1][j][i]
@@ -773,55 +610,17 @@ function writefile0(lineAlert,arrKenri,arrDDMMYY,req) {
 
   arrDDMMYY[0] = Object.values(req.body)[0][0];
   arrDDMMYY[1] = Object.values(req.body)[0][1];
-  
-  arrKenri[0][0][0]  = Object.values(req.body)[1][0]
-  arrKenri[0][0][1]  = Object.values(req.body)[1][1]
-  arrKenri[0][0][2]  = Object.values(req.body)[1][2]
-  arrKenri[0][0][3]  = Object.values(req.body)[1][3]
-  arrKenri[0][0][4]  = Object.values(req.body)[1][4]
 
-  lineAlert[0][0][0] = Object.values(req.body)[2][0]
-  lineAlert[0][0][1] = Object.values(req.body)[2][1]
-  lineAlert[0][0][2] = Object.values(req.body)[2][2]
-  lineAlert[0][0][3] = Object.values(req.body)[2][3]
-  lineAlert[0][0][4] = Object.values(req.body)[2][4]
-
-  arrKenri[1][0][0]  = Object.values(req.body)[3][0] 
-  arrKenri[1][0][1]  = Object.values(req.body)[3][1] 
-  arrKenri[1][0][2]  = Object.values(req.body)[3][2] 
-  arrKenri[1][0][3]  = Object.values(req.body)[3][3] 
-  arrKenri[1][0][4]  = Object.values(req.body)[3][4] 
-
-  lineAlert[1][0][0] = Object.values(req.body)[4][0]
-  lineAlert[1][0][1] = Object.values(req.body)[4][1]
-  lineAlert[1][0][2] = Object.values(req.body)[4][2]
-  lineAlert[1][0][3] = Object.values(req.body)[4][3]
-  lineAlert[1][0][4] = Object.values(req.body)[4][4]
-
-  arrKenri[0][1][0]  = Object.values(req.body)[5][0]
-  arrKenri[0][1][1]  = Object.values(req.body)[5][1]
-  arrKenri[0][1][2]  = Object.values(req.body)[5][2]
-  arrKenri[0][1][3]  = Object.values(req.body)[5][3]
-  arrKenri[0][1][4]  = Object.values(req.body)[5][4]
-
-  lineAlert[0][1][0] = Object.values(req.body)[6][0]
-  lineAlert[0][1][1] = Object.values(req.body)[6][1]
-  lineAlert[0][1][2] = Object.values(req.body)[6][2]
-  lineAlert[0][1][3] = Object.values(req.body)[6][3]
-  lineAlert[0][1][4] = Object.values(req.body)[6][4]
-
-  arrKenri[1][1][0]  = Object.values(req.body)[7][0]
-  arrKenri[1][1][1]  = Object.values(req.body)[7][1]
-  arrKenri[1][1][2]  = Object.values(req.body)[7][2]
-  arrKenri[1][1][3]  = Object.values(req.body)[7][3]
-  arrKenri[1][1][4]  = Object.values(req.body)[7][4]
-
-  lineAlert[1][1][0] = Object.values(req.body)[8][0]
-  lineAlert[1][1][1] = Object.values(req.body)[8][1]
-  lineAlert[1][1][2] = Object.values(req.body)[8][2]
-  lineAlert[1][1][3] = Object.values(req.body)[8][3]
-  lineAlert[1][1][4] = Object.values(req.body)[8][4]
-
+  for(let i = 0 ; i <= 4 ; i++){
+     arrKenri[0][0][i] = Object.values(req.body)[1][i]
+    lineAlert[0][0][i] = Object.values(req.body)[2][i]
+     arrKenri[1][0][i] = Object.values(req.body)[3][i] 
+    lineAlert[1][0][i] = Object.values(req.body)[4][i]
+     arrKenri[0][1][i] = Object.values(req.body)[5][i]
+    lineAlert[0][1][i] = Object.values(req.body)[6][i]
+     arrKenri[1][1][i] = Object.values(req.body)[7][i]
+    lineAlert[1][1][i] = Object.values(req.body)[8][i]
+  }
 
 
   let lac0 = '';
@@ -969,13 +768,13 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
     ;
 
     console.error(['DD-MM-YY ' + arrDDMMYY])
-    console.error(['KenriC0 ' + arrKenri[0][0]])
+    console.error(['KenriC0 ' +  arrKenri[0][0]])
     console.error(['AlertC0 ' + lineAlert[0][0]])
-    console.error(['KenriP0 ' + arrKenri[1][0]])
+    console.error(['KenriP0 ' +  arrKenri[1][0]])
     console.error(['AlertP0 ' + lineAlert[1][0]])
-    console.error(['KenriC1 ' + arrKenri[0][1]])
+    console.error(['KenriC1 ' +  arrKenri[0][1]])
     console.error(['AlertC1 ' + lineAlert[0][1]])
-    console.error(['KenriP1 ' + arrKenri[1][1]])
+    console.error(['KenriP1 ' +  arrKenri[1][1]])
     console.error(['AlertP1 ' + lineAlert[1][1]])
 
     //console.error(pathtext + htmltag)
