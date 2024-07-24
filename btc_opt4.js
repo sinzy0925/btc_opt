@@ -85,92 +85,11 @@ app.get('/'+urlpath, (req, res) => {
   console.error("")
   console.error("Start app.get()")
 
-  const files  = fs.readdirSync(urlpath);
-  let filter = files.filter(RegExp.prototype.test, /.*\.html$/); // ファイル名一覧から、拡張子で抽出
-
-  filter = filter.slice(0,-1)
-  console.log(filter)
-
-  let pathtext ='<table> <tbody>';
-
-  pathtext += '<tr><td>'+ arrDDMMYY[0] + '</td></tr>\n'
-  pathtext += '<tr>\n';  
-  pathtext += '<td><a href="' + filter[0] + '">' + filter[0] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[1] + '">' + filter[1] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[2] + '">' + filter[2] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[3] + '">' + filter[3] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[4] + '">' + filter[4] + '</a></td>\n'
-  pathtext += '</tr>\n'
-  pathtext += '<tr>\n';
-  pathtext += '<td><a href="' + filter[10] + '">' + filter[10] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[11] + '">' + filter[11] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[12] + '">' + filter[12] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[13] + '">' + filter[13] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[14] + '">' + filter[14] + '</a></td>\n'
-  pathtext += '</tr>\n'
-  pathtext += '<tr></tr><tr><td>'+arrDDMMYY[1]+'</td></tr><tr></tr>\n'
-  pathtext += '<tr>\n';
-  pathtext += '<td><a href="' + filter[5] + '">' + filter[5] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[6] + '">' + filter[6] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[7] + '">' + filter[7] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[8] + '">' + filter[8] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[9] + '">' + filter[9] + '</a></td>\n'
-  pathtext += '</tr>\n'
-  pathtext += '<tr>\n';
-  pathtext += '<td><a href="' + filter[15] + '">' + filter[15] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[16] + '">' + filter[16] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[17] + '">' + filter[17] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[18] + '">' + filter[18] + '</a></td>\n'
-  pathtext += '<td><a href="' + filter[19] + '">' + filter[19] + '</a></td>\n'
-  pathtext += '</tr>\n'
-/*
-  for(let i = 0 ; i < filter.length ; i++){
-    if(filter[i].indexOf('down') == -1){
-      if(      i == 0){
-        pathtext += '<tr><td>'+ arrDDMMYY[0] + '</td></tr><tr>';  
-      }else if(i == 3 || i == 9){
-        pathtext += '</tr><tr>';
-      }else if(i == 6 ){
-        pathtext += '</tr><tr></tr><tr><td>'+arrDDMMYY[1]+'</td></tr><tr></tr><tr>';
-      }
-
-      if(      i >=3 && i <6){
-        pathtext += '<td><a href="' + filter[i+3] + '">' + filter[i+3] + '</a></td>\n'
-      }else if(i >=6 && i <9){
-        pathtext += '<td><a href="' + filter[i-3] + '">' + filter[i-3] + '</a></td>\n'
-      }else if(i >=0 && i <3 || i >=9 && i <12){
-        pathtext += '<td><a href="' + filter[i] + '">' + filter[i] + '</a></td>\n'
-      }
-    }
-  }
-*/
-  pathtext += '</tbody></table>';
-  console.log(pathtext)
-
-
-  /*
-  for(let i = 0 ; i < filter.length ; i++){
-    if(filter[i].indexOf('down') == -1){
-      if(i > 0 ){
-        if(filter[i-1].slice(0,1) != filter[i].slice(0,1)){
-          pathtext += '<br>';
-        }
-      }
-    if(i == 0){
-      pathtext += '     <a href="' + filter[i] + '">' + filter[i] + '</a>\n';
-    }else{
-      pathtext += '<br> <a href="' + filter[i] + '">' + filter[i] + '</a>\n';
-    }
-
-    }  
-  }
-*/  
-
-  let htmltag = maketag(lineAlert,arrKenri,arrDDMMYY);
+  let htmltag = maketag(lineAlert,arrKenri,arrDDMMYY,urlpath);
   
   res.send(
-    pathtext 
-    + htmltag
+    //pathtext 
+    htmltag
   );
   console.error("END app.get()")
 })
@@ -942,9 +861,74 @@ function writefile0(lineAlert,arrKenri,arrDDMMYY,req) {
 
 }
 
-function maketag(lineAlert,arrKenri,arrDDMMYY){
+function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
   console.error(" Start maketag(lineAlert,arrKenri,arrDDMMYY) ")
 
+  const files  = fs.readdirSync(urlpath);
+  let filter = files.filter(RegExp.prototype.test, /.*\.html$/); // ファイル名一覧から、拡張子で抽出
+
+  filter = filter.slice(0,-1)
+  console.log(filter.slice(0,5).toString())
+  console.log(filter.slice(10,15).toString())
+  console.log(filter.slice(5,10).toString())
+  console.log(filter.slice(15,20).toString())
+
+  let pathtext ='<table> <tbody>';
+  pathtext += '<tr><td>'+ arrDDMMYY[0] + '</td></tr>\n'
+  pathtext += '<tr>\n';  
+  pathtext += '<td><a href="' + filter[0] + '">' + filter[0] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[1] + '">' + filter[1] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[2] + '">' + filter[2] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[3] + '">' + filter[3] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[4] + '">' + filter[4] + '</a></td>\n'
+  pathtext += '</tr>\n'
+  pathtext += '<tr>\n';
+  pathtext += '<td><a href="' + filter[10] + '">' + filter[10] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[11] + '">' + filter[11] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[12] + '">' + filter[12] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[13] + '">' + filter[13] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[14] + '">' + filter[14] + '</a></td>\n'
+  pathtext += '</tr>\n'
+  pathtext += '<tr></tr><tr><td>'+arrDDMMYY[1]+'</td></tr><tr></tr>\n'
+  pathtext += '<tr>\n';
+  pathtext += '<td><a href="' + filter[5] + '">' + filter[5] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[6] + '">' + filter[6] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[7] + '">' + filter[7] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[8] + '">' + filter[8] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[9] + '">' + filter[9] + '</a></td>\n'
+  pathtext += '</tr>\n'
+  pathtext += '<tr>\n';
+  pathtext += '<td><a href="' + filter[15] + '">' + filter[15] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[16] + '">' + filter[16] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[17] + '">' + filter[17] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[18] + '">' + filter[18] + '</a></td>\n'
+  pathtext += '<td><a href="' + filter[19] + '">' + filter[19] + '</a></td>\n'
+  pathtext += '</tr>\n'
+  pathtext += '</tbody></table>';
+
+  //console.log(pathtext)
+
+  let sq0Ck =''
+  let sq0Ca =''
+  let sq0Pk =''
+  let sq0Pa =''
+  let sq1Ck =''
+  let sq1Ca =''
+  let sq1Pk =''
+  let sq1Pa =''
+  
+  for(let i = 0 ; i <= 4 ; i++){
+    sq0Ck += '<input type="text" size="2" name="kenriC0" value="'+ arrKenri[0][0][i]+'">'
+    sq0Ca += '<input type="text" size="3" name="alertC0" value="'+lineAlert[0][0][i]+'">'
+    sq0Pk += '<input type="text" size="2" name="kenriP0" value="'+ arrKenri[1][0][i]+'">'
+    sq0Pa += '<input type="text" size="3" name="alertP0" value="'+lineAlert[1][0][i]+'">'
+    sq1Ck += '<input type="text" size="2" name="kenriC1" value="'+ arrKenri[0][1][i]+'">'
+    sq1Ca += '<input type="text" size="3" name="alertC1" value="'+lineAlert[0][1][i]+'">'
+    sq1Pk += '<input type="text" size="2" name="kenriP1" value="'+ arrKenri[1][1][i]+'">'
+    sq1Pa += '<input type="text" size="3" name="alertP1" value="'+lineAlert[1][1][i]+'">'
+
+
+  }
   let htmltag =
     '<br> <a href="zdownload.html">データ表示　：全データファイル</a>\n'
     + '<br> <a href="download">ダウンロード：全データファイル</a>\n'
@@ -955,60 +939,24 @@ function maketag(lineAlert,arrKenri,arrDDMMYY){
     + '<br>ＳＱ日０ : ' 
     + '<input type="text" size="4" name="ddmmyy0" value="'+arrDDMMYY[0]+'">'
     + '<br>ＣＡＬＬ 権利行使価格 : '
-    + '<input type="text" size="2" name="kenriC0" value="'+arrKenri[0][0][0]+'">'
-    + '<input type="text" size="2" name="kenriC0" value="'+arrKenri[0][0][1]+'">'
-    + '<input type="text" size="2" name="kenriC0" value="'+arrKenri[0][0][2]+'">'
-    + '<input type="text" size="2" name="kenriC0" value="'+arrKenri[0][0][3]+'">'
-    + '<input type="text" size="2" name="kenriC0" value="'+arrKenri[0][0][4]+'">'
+    + sq0Ck
     + ' Alert '
-    + '<input type="text" size="3" name="alertC0" value="'+lineAlert[0][0][0]+'">'
-    + '<input type="text" size="3" name="alertC0" value="'+lineAlert[0][0][1]+'">'
-    + '<input type="text" size="3" name="alertC0" value="'+lineAlert[0][0][2]+'">'
-    + '<input type="text" size="3" name="alertC0" value="'+lineAlert[0][0][3]+'">'
-    + '<input type="text" size="3" name="alertC0" value="'+lineAlert[0][0][4]+'">'
-
+    + sq0Ca
     + '<br>ＰＵＴ　 権利行使価格 : '
-    + '<input type="text" size="2" name="kenriP0" value="'+arrKenri[1][0][0]+'">'
-    + '<input type="text" size="2" name="kenriP0" value="'+arrKenri[1][0][1]+'">'
-    + '<input type="text" size="2" name="kenriP0" value="'+arrKenri[1][0][2]+'">'
-    + '<input type="text" size="2" name="kenriP0" value="'+arrKenri[1][0][3]+'">'
-    + '<input type="text" size="2" name="kenriP0" value="'+arrKenri[1][0][4]+'">'
+    + sq0Pk
     + ' Alert '
-    + '<input type="text" size="3" name="alertP0" value="'+lineAlert[1][0][0]+'">'
-    + '<input type="text" size="3" name="alertP0" value="'+lineAlert[1][0][1]+'">'
-    + '<input type="text" size="3" name="alertP0" value="'+lineAlert[1][0][2]+'">'
-    + '<input type="text" size="3" name="alertP0" value="'+lineAlert[1][0][3]+'">'
-    + '<input type="text" size="3" name="alertP0" value="'+lineAlert[1][0][4]+'">'
+    + sq0Pa
 
     + '<br>ＳＱ日１ : '
     + '<input type="text" size="4" name="ddmmyy0" value="'+arrDDMMYY[1]+'">'
     + '<br>ＣＡＬＬ 権利行使価格 : '
-    + '<input type="text" size="2" name="kenriC1" value="'+arrKenri[0][1][0]+'">'
-    + '<input type="text" size="2" name="kenriC1" value="'+arrKenri[0][1][1]+'">'
-    + '<input type="text" size="2" name="kenriC1" value="'+arrKenri[0][1][2]+'">'
-    + '<input type="text" size="2" name="kenriC1" value="'+arrKenri[0][1][3]+'">'
-    + '<input type="text" size="2" name="kenriC1" value="'+arrKenri[0][1][4]+'">'
+    + sq1Ck
     + ' Alert '
-    + '<input type="text" size="3" name="alertC1" value="'+lineAlert[0][1][0]+'">'
-    + '<input type="text" size="3" name="alertC1" value="'+lineAlert[0][1][1]+'">'
-    + '<input type="text" size="3" name="alertC1" value="'+lineAlert[0][1][2]+'">'
-    + '<input type="text" size="3" name="alertC1" value="'+lineAlert[0][1][3]+'">'
-    + '<input type="text" size="3" name="alertC1" value="'+lineAlert[0][1][4]+'">'
-
-
+    + sq1Ca
     + '<br>ＰＵＴ　 権利行使価格 : '
-    + '<input type="text" size="2" name="kenriP1" value="'+arrKenri[1][1][0]+'">'
-    + '<input type="text" size="2" name="kenriP1" value="'+arrKenri[1][1][1]+'">'
-    + '<input type="text" size="2" name="kenriP1" value="'+arrKenri[1][1][2]+'">'
-    + '<input type="text" size="2" name="kenriP1" value="'+arrKenri[1][1][3]+'">'
-    + '<input type="text" size="2" name="kenriP1" value="'+arrKenri[1][1][4]+'">'
+    + sq1Pk
     + ' Alert '
-    + '<input type="text" size="3" name="alertP1" value="'+lineAlert[1][1][0]+'">'
-    + '<input type="text" size="3" name="alertP1" value="'+lineAlert[1][1][1]+'">'
-    + '<input type="text" size="3" name="alertP1" value="'+lineAlert[1][1][2]+'">'
-    + '<input type="text" size="3" name="alertP1" value="'+lineAlert[1][1][3]+'">'
-    + '<input type="text" size="3" name="alertP1" value="'+lineAlert[1][1][4]+'">'
-
+    + sq1Pa
     
     + '<br><input type="submit" value="送信！">'
     + '</form>'
@@ -1027,7 +975,7 @@ function maketag(lineAlert,arrKenri,arrDDMMYY){
 
     console.error(" END maketag(lineAlert,arrKenri,arrDDMMYY) ")
   
-    return htmltag;
+    return (pathtext + htmltag);
 }
 
 function sortFunc(PATH){
