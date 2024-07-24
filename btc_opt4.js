@@ -28,31 +28,6 @@ app.use('/'+urlpath, express.static(__dirname + '/'+urlpath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-
-
-
-app.get('/' + urlpath+ 'download', (req, res) => {
-  res.download('./' + urlpath + 'zdownload.html');
-})
-
-app.get('/' + urlpath + 'del', (req, res) => {
-  let deletefiels = ""
-  let files2 = fs.readdirSync(urlpath);
-  let filter2 = files2.filter(RegExp.prototype.test, /.*\.html$/); // ファイル名一覧から、拡張子で抽出
-  //res.send(filter2);
-  
-  for(let i =0 ; i < filter2.length ; i++){
-      //res.send(filter2[i]);
-      fs.unlinkSync(urlpath + filter2[i]);
-      console.error(filter2[i]);
-      deletefiels += '<br>' + filter2[i] + ' is Deleted.';
-  }
-  res.send(deletefiels);
-})
-
-
-
 let arrDDMMYY = [];
 arrDDMMYY[0] = '26-07-24';
 arrDDMMYY[1] = '02-08-24';
@@ -77,6 +52,31 @@ lineAlert = arrResult[0];
 arrKenri  = arrResult[1];
 arrDDMMYY = arrResult[2];
 
+//app
+
+app.get('/' + urlpath+ 'download', (req, res) => {
+  res.download('./' + urlpath + 'zdownload.html');
+})
+
+app.get('/del', (req, res) => {
+  console.error('Start app.get(/del)');
+  let deletefiels = "";
+  let files2 = fs.readdirSync(urlpath);
+  let filter2 = files2.filter(RegExp.prototype.test, /.*\.html$/); // ファイル名一覧から、拡張子で抽出
+  //res.send(filter2);
+  
+  for(let i =0 ; i < filter2.length ; i++){
+      //res.send(filter2[i]);
+      fs.unlinkSync(urlpath + filter2[i]);
+      console.error(filter2[i]);
+      deletefiels += '<br>' + filter2[i] + ' is Deleted.\n';
+  }
+  console.error(deletefiels);
+  //res.redirect(301, '../')
+  res.send('<a href=\"/' + urlpath + '\"> Home </a>' + deletefiels);
+  console.error('END app.get(/del)');
+
+})
 
 app.get('/'+urlpath, (req, res) => {
   console.error("")
@@ -109,10 +109,7 @@ app.post('/', function (req, res) {
   res.redirect(301, urlpath)
 })
 
-
-
-
-
+//app
 
 //const { chromium } = require('playwright');//Chromiumというブラウザを使う
 const { firefox } = require('playwright');
@@ -194,12 +191,6 @@ for(let loop = 0 ; loop < 2 ; loop++){
         break;
       }
 
-      console.error("");
-      console.error(["dd-mm-yy:" + ddmmyy , " genshisan:" + genshi]);
-      console.error("");
-
-
-
       let dd = ddmmyy.split('-')[0]; 
       let mm = ddmmyy.split('-')[1]; 
       let yy = ddmmyy.split('-')[2];
@@ -207,7 +198,11 @@ for(let loop = 0 ; loop < 2 ; loop++){
       arrMM = ['','JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
       mm = arrMM[parseInt(mm)];
       dd = parseInt(dd);
-        
+
+      console.error("");
+      console.error(["dd-mm-yy:", ddmmyy , dd+mm+yy],[" genshisan:" + genshi]);
+      console.error("");
+
       await callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenri);
       
     }//for(let j = 0 ; j < arrDDMMYY.length ; j++){
@@ -564,20 +559,20 @@ function readfile0() {
     let ac01  = ac1.split('\r')[0].split(',');
     let ap00  = ap0.split('\r')[0].split(',');
     let ap01  = ap1.split('\r')[0].split(',');
-    lineAlert[0][0] = [ac00[0],ac00[1],ac00[2],ac00[3],ac00[4]];
-    lineAlert[0][1] = [ac01[0],ac01[1],ac01[2],ac01[3],ac01[4]];
-    lineAlert[1][0] = [ap00[0],ap00[1],ap00[2],ap00[3],ap00[4]];
-    lineAlert[1][1] = [ap01[0],ap01[1],ap01[2],ap01[3],ap01[4]];
-  
+
+    lineAlert[0][0] = ac00.slice(0,-1);//[ac00[0],ac00[1],ac00[2],ac00[3],ac00[4]];
+    lineAlert[0][1] = ac01.slice(0,-1);//[ac01[0],ac01[1],ac01[2],ac01[3],ac01[4]];
+    lineAlert[1][0] = ap00.slice(0,-1);//[ap00[0],ap00[1],ap00[2],ap00[3],ap00[4]];
+    lineAlert[1][1] = ap01.slice(0,-1);//[ap01[0],ap01[1],ap01[2],ap01[3],ap01[4]];
   
     let kc00 = kc0.split('\r')[0].split(',');
     let kc01 = kc1.split('\r')[0].split(',');
     let kp00 = kp0.split('\r')[0].split(',');
     let kp01 = kp1.split('\r')[0].split(',');
-    arrKenri[0][0] = [kc00[0],kc00[1],kc00[2],kc00[3],kc00[4]];
-    arrKenri[0][1] = [kc01[0],kc01[1],kc01[2],kc01[3],kc01[4]];
-    arrKenri[1][0] = [kp00[0],kp00[1],kp00[2],kp00[3],kp00[4]];
-    arrKenri[1][1] = [kp01[0],kp01[1],kp01[2],kp01[3],kp01[4]];
+    arrKenri[0][0] = kc00.slice(0,-1);//[kc00[0],kc00[1],kc00[2],kc00[3],kc00[4]];
+    arrKenri[0][1] = kc01.slice(0,-1);//[kc01[0],kc01[1],kc01[2],kc01[3],kc01[4]];
+    arrKenri[1][0] = kp00.slice(0,-1);//[kp00[0],kp00[1],kp00[2],kp00[3],kp00[4]];
+    arrKenri[1][1] = kp01.slice(0,-1);//[kp01[0],kp01[1],kp01[2],kp01[3],kp01[4]];
   
   
     let dmy1  = dmy.split('\r')[0].split(',');
@@ -669,15 +664,15 @@ function writefile0(lineAlert,arrKenri,arrDDMMYY,req) {
   fs.writeFileSync(urlpath+"paramKenriP1.csv", kep1);
 
 
-  console.error(['DD-MM-YY',arrDDMMYY],'  =>',["write paramDDMMYY.csv" , arrDDMMYY[0]+','+arrDDMMYY[1]])
-  console.error(['KenriC0', arrKenri[0][0]],'         =>',["write paramKenriC0.csv", kec0])
-  console.error(['AlertC0',lineAlert[0][0]],'=>',["write paramAlertC0.csv", lac0])
-  console.error(['KenriP0', arrKenri[1][0]],'         =>',["write paramKenriP0.csv", kep0])
-  console.error(['AlertP0',lineAlert[1][0]],'=>',["write paramAlertP0.csv", lap0])
-  console.error(['KenriC1', arrKenri[0][1]],'         =>',["write paramKenriC1.csv", kec1])
-  console.error(['AlertC1',lineAlert[0][1]],'=>',["write paramAlertC1.csv", lac1])
-  console.error(['KenriP1', arrKenri[1][1]],'         =>',["write paramKenriP1.csv", kep1])
-  console.error(['AlertP1',lineAlert[1][1]],'=>',["write paramAlertP1.csv", lap1])
+  console.error(["write paramDDMMYY.csv ", arrDDMMYY[0]+','+arrDDMMYY[1]])
+  console.error(["write paramKenriC0.csv", kec0])
+  console.error(["write paramAlertC0.csv", lac0])
+  console.error(["write paramKenriP0.csv", kep0])
+  console.error(["write paramAlertP0.csv", lap0])
+  console.error(["write paramKenriC1.csv", kec1])
+  console.error(["write paramAlertC1.csv", lac1])
+  console.error(["write paramKenriP1.csv", kep1])
+  console.error(["write paramAlertP1.csv", lap1])
 
   console.error(" END writefile0(lineAlert,arrKenri,arrDDMMYY,req) ")
 
@@ -690,11 +685,13 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
   let filter = files.filter(RegExp.prototype.test, /.*\.html$/); // ファイル名一覧から、拡張子で抽出
 
   filter = filter.slice(0,-1)//zdownload無視する
+  /*
   console.log(filter.slice(0,5).toString())
   console.log(filter.slice(10,15).toString())
   console.log(filter.slice(5,10).toString())
   console.log(filter.slice(15,20).toString())
-
+  */
+  
   let sq0C = ''
   let sq0P = ''
   let sq1C = ''
@@ -708,20 +705,12 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
 
   let pathtext ='<table> <tbody>';
   pathtext += '<tr><td>'+ arrDDMMYY[0] + '</td></tr>\n'
-  pathtext += '<tr>\n';
-  pathtext += sq0C
-  pathtext += '</tr>\n'
-  pathtext += '<tr>\n';
-  pathtext += sq0P
-  pathtext += '</tr>\n'
+  pathtext += '<tr>\n' + sq0C + '</tr>\n'
+  pathtext += '<tr>\n' + sq0P + '</tr>\n'
   pathtext += '<tr></tr><tr><td>'+arrDDMMYY[1]+'</td></tr><tr></tr>\n'
-  pathtext += '<tr>\n';
-  pathtext += sq1C
-  pathtext += '</tr>\n'
-  pathtext += '<tr>\n'
-  pathtext += sq1P
-  pathtext += '</tr>\n'
-  pathtext += '</tbody></table>';
+  pathtext += '<tr>\n' + sq1C + '</tr>\n'
+  pathtext += '<tr>\n' + sq1P + '</tr>\n'
+  pathtext += '</tbody></table>\n';
 
   //console.log(pathtext)
 
@@ -743,13 +732,12 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
     sq1Ca += '<input type="text" size="2" name="alertC1" value="'+lineAlert[0][1][i]+'">\n'
     sq1Pk += '<input type="text" size="1" name="kenriP1" value="'+ arrKenri[1][1][i]+'">\n'
     sq1Pa += '<input type="text" size="2" name="alertP1" value="'+lineAlert[1][1][i]+'">\n'
-
-
   }
+
   let htmltag =
     '<br> <a href="zdownload.html">データ表示　：全データファイル</a>\n'
-    + '<br> <a href="download">ダウンロード：全データファイル</a>\n'
-    + '<br> <a href="del" >ファイル削除：全データファイル（ダウンロード後）</a>\n'
+    + '<br> <a href="download">/download ダウンロード：全データファイル</a>\n'
+    + '<br> <a href="../del" >/del ファイル削除：全データファイル（ダウンロード後）</a>\n'
     + '<br> <form action="/" method="post">\n'
     + 'パラメータ設定　※注意：ＳＱ日以外は、すべて数値で入力してください！\n'
     
@@ -766,7 +754,7 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
     + '<br><input type="submit" value="送信！">\n'
     + '</form>\n'
     ;
-
+/*
     console.error(['DD-MM-YY ' + arrDDMMYY])
     console.error(['KenriC0 ' +  arrKenri[0][0]])
     console.error(['AlertC0 ' + lineAlert[0][0]])
@@ -776,8 +764,8 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
     console.error(['AlertC1 ' + lineAlert[0][1]])
     console.error(['KenriP1 ' +  arrKenri[1][1]])
     console.error(['AlertP1 ' + lineAlert[1][1]])
-
-    //console.error(pathtext + htmltag)
+*/
+    console.error(pathtext + htmltag)
   
 
     console.error(" END maketag(lineAlert,arrKenri,arrDDMMYY) ")
