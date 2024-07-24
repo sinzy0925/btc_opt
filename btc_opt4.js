@@ -58,11 +58,16 @@ arrDDMMYY[0] = '26-07-24';
 arrDDMMYY[1] = '02-08-24';
 
 let cnt = -1;
+/*
 let lineCnt = {cntC00:0 ,cntC01:0 ,cntC02:0 ,cntC03:0 ,cntC04:0 
               ,cntC10:0 ,cntC11:0 ,cntC12:0 ,cntC13:0 ,cntC14:0 
               ,cntP00:0 ,cntP01:0 ,cntP02:0 ,cntP03:0 ,cntP04:0 
               ,cntP10:0 ,cntP11:0 ,cntP12:0 ,cntP13:0 ,cntP14:0
             };
+*/
+let lineCnt = [];
+lineCnt[0] = [[0,0,0,0,0],[0,0,0,0,0]];//C          
+lineCnt[1] = [[0,0,0,0,0],[0,0,0,0,0]];//P      
 //console.error(lineCnt)
 
 
@@ -397,6 +402,9 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
 
 
         let lineCount = 0;
+        lineCount = lineCnt[0][j][i]
+
+        /*
         if(      j == 0 && i == 0){
           lineCount = lineCnt.cntC00
         }else if(j == 0 && i == 1){
@@ -418,6 +426,7 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
         }else if(j == 1 && i == 4){
           lineCount = lineCnt.cntC14
         }
+        */
     
         if(sell > lineAlert[0][j][i] && lineCount < 5){
           let linemsg = '[SELL Alert]>' + lineAlert[0][j][i] + '\n\n'
@@ -434,6 +443,8 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
           console.error(msg[7],msg[8])
           
           lineCount++;
+          lineCnt[0][j][i] = lineCount;
+          /*
           if(      j == 0 && i ==0){
             lineCnt.cntC00 = lineCount;
           }else if(j == 0 && i ==1){
@@ -455,6 +466,7 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
           }else if(j == 1 && i ==4){
             lineCnt.cntC14 = lineCount;
           }
+          */
         }
 
         console.error([meigara],['Alert'],lineAlert[0][j][i]
@@ -578,6 +590,8 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
         await page.waitForTimeout(500);
 
         let lineCount = 0;
+        lineCount = lineCnt[1][j][i]
+        /*
         if(      j == 0 && i == 0){
           lineCount = lineCnt.cntP00
         }else if(j == 0 && i == 1){
@@ -599,6 +613,7 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
         }else if(j == 1 && i == 4){
           lineCount = lineCnt.cntP14
         }
+          */
 
         if(sell > lineAlert[1][j][i] && lineCount < 5){
           let linemsg = '[SELL Alert]>' + lineAlert[1][j][i] + '\n\n'
@@ -615,8 +630,9 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
           console.error(msg[7],msg[8])
           
           lineCount++;
+          lineCnt[1][j][i] = lineCount;
           
-          
+          /*
           if(      j == 0 && i ==0){
             lineCnt.cntP00 = lineCount;
           }else if(j == 0 && i ==1){
@@ -638,6 +654,7 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
           }else if(j == 1 && i ==4){
             lineCnt.cntP14 = lineCount;
           }
+          */
         }
 
         console.error([meigara],['Alert'],lineAlert[1][j][i]
@@ -679,8 +696,8 @@ async function sendline(linemsg) {
   try {
     await client.broadcast(messages);
   } catch (error) {
-    console.log(`${ error.statusMessage }`);
-    console.log(error.originalError.response.data);
+    console.error('error : async function sendline(linemsg) => ' + `${ error.statusMessage }`);
+    console.error(error.originalError.response.data);
   }
 }
 
