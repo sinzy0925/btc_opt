@@ -247,20 +247,12 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
     let BTC_C_line = 'BTC-Options\n' + arrDDMMYY[j] + '\n-' + arrKenri_c[i] + '000[C]';
 
 
-    meigara = 'C'
-            + arrDDMMYY[j].split('-')[2]  
+    meigara = arrDDMMYY[j].split('-')[2]  
             + arrDDMMYY[j].split('-')[1]
             + arrDDMMYY[j].split('-')[0]
-            + '-' + arrKenri_c[i];
+            + 'C-' + arrKenri_c[i];
 
 
-  /*          
-    if(i == 0){
-      meigara = 'C' + meigara + 'a' + j;
-    }else{
-      meigara = 'C' + meigara;
-    }
-  */
     PATH = urlpath//'../Dropbox/Attachments/' 
          + meigara
          + '.html';
@@ -380,11 +372,10 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
     let BTC_P      = dd + mm        + yy + '-' + arrKenri_p[i] ;
     let BTC_P_line = 'BTC-Options\n' + arrDDMMYY[j] + '\n-' + arrKenri_p[i] + '000[P]';
     
-    meigara = 'P'
-        + arrDDMMYY[j].split('-')[2]  
-        + arrDDMMYY[j].split('-')[1]
-        + arrDDMMYY[j].split('-')[0]
-        + '-' + arrKenri_p[i];
+    meigara = arrDDMMYY[j].split('-')[2]  
+            + arrDDMMYY[j].split('-')[1]
+            + arrDDMMYY[j].split('-')[0]
+            + 'P-' + arrKenri_p[i];
 
     PATH = urlpath//'../Dropbox/Attachments/' 
         + meigara
@@ -685,12 +676,6 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
   let filter = files.filter(RegExp.prototype.test, /.*\.html$/); // ファイル名一覧から、拡張子で抽出
 
   filter = filter.slice(0,-1)//zdownload無視する
-  /*
-  console.log(filter.slice(0,5).toString())
-  console.log(filter.slice(10,15).toString())
-  console.log(filter.slice(5,10).toString())
-  console.log(filter.slice(15,20).toString())
-  */
   
   let sq0C = ''
   let sq0P = ''
@@ -698,8 +683,8 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
   let sq1P = ''
   for(let i = 0 ; i <= 4 ; i++){
     sq0C += '<td><a href="' + filter[i]    + '">' + filter[i] + '</a></td>\n'
-    sq1C += '<td><a href="' + filter[i+5]  + '">' + filter[i+5] + '</a></td>\n'
-    sq0P += '<td><a href="' + filter[i+10] + '">' + filter[i+10] + '</a></td>\n'
+    sq0P += '<td><a href="' + filter[i+5]  + '">' + filter[i+5] + '</a></td>\n'
+    sq1C += '<td><a href="' + filter[i+10] + '">' + filter[i+10] + '</a></td>\n'
     sq1P += '<td><a href="' + filter[i+15] + '">' + filter[i+15] + '</a></td>\n'
   }
 
@@ -754,17 +739,6 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
     + '<br><input type="submit" value="送信！">\n'
     + '</form>\n'
     ;
-/*
-    console.error(['DD-MM-YY ' + arrDDMMYY])
-    console.error(['KenriC0 ' +  arrKenri[0][0]])
-    console.error(['AlertC0 ' + lineAlert[0][0]])
-    console.error(['KenriP0 ' +  arrKenri[1][0]])
-    console.error(['AlertP0 ' + lineAlert[1][0]])
-    console.error(['KenriC1 ' +  arrKenri[0][1]])
-    console.error(['AlertC1 ' + lineAlert[0][1]])
-    console.error(['KenriP1 ' +  arrKenri[1][1]])
-    console.error(['AlertP1 ' + lineAlert[1][1]])
-*/
     console.error(pathtext + htmltag)
   
 
