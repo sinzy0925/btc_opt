@@ -449,7 +449,7 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
         fs.writeFileSync(PATH, sorted,{flag: "w"}); 
 
         fs.appendFileSync( urlpath + 'zdownload.html', resC );
-        if(i == 2){
+        if(i == 4){
           let sorted1 = sortFunc(urlpath + 'zdownload.html');
           //console.log(sorted1)
           fs.writeFileSync(urlpath + 'zdownload.html', sorted1,{flag: "w"});   
