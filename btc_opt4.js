@@ -731,13 +731,14 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
   let day2p = files.filter( function( value ) {
     return value.substring(0,7) === arrDDMMYY[2].split('-')[2]+arrDDMMYY[2].split('-')[1]+arrDDMMYY[2].split('-')[0]+'P';
   })
+  /*
   console.log(day0c)
   console.log(day1c)
   console.log(day2c)
   console.log(day0p)
   console.log(day1p)
   console.log(day2p)
-
+  */
 
   filter = filter.slice(0,-1)//zdownload無視する
   
