@@ -713,6 +713,32 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
   const files  = fs.readdirSync(urlpath);
   let filter = files.filter(RegExp.prototype.test, /.*\.html$/); // ファイル名一覧から、拡張子で抽出
 
+  let day0c = files.filter( function( value ) {
+    return value.substring(0,7) === arrDDMMYY[0].split('-')[2]+arrDDMMYY[0].split('-')[1]+arrDDMMYY[0].split('-')[0]+'C';
+  })
+  let day0p = files.filter( function( value ) {
+    return value.substring(0,7) === arrDDMMYY[0].split('-')[2]+arrDDMMYY[0].split('-')[1]+arrDDMMYY[0].split('-')[0]+'P';
+  })
+  let day1c = files.filter( function( value ) {
+    return value.substring(0,7) === arrDDMMYY[1].split('-')[2]+arrDDMMYY[1].split('-')[1]+arrDDMMYY[1].split('-')[0]+'C';
+  })
+  let day1p = files.filter( function( value ) {
+    return value.substring(0,7) === arrDDMMYY[1].split('-')[2]+arrDDMMYY[1].split('-')[1]+arrDDMMYY[1].split('-')[0]+'P';
+  })
+  let day2c = files.filter( function( value ) {
+    return value.substring(0,7) === arrDDMMYY[2].split('-')[2]+arrDDMMYY[2].split('-')[1]+arrDDMMYY[2].split('-')[0]+'C';
+  })
+  let day2p = files.filter( function( value ) {
+    return value.substring(0,7) === arrDDMMYY[2].split('-')[2]+arrDDMMYY[2].split('-')[1]+arrDDMMYY[2].split('-')[0]+'P';
+  })
+  console.log(day0c)
+  console.log(day1c)
+  console.log(day2c)
+  console.log(day0p)
+  console.log(day1p)
+  console.log(day2p)
+
+
   filter = filter.slice(0,-1)//zdownload無視する
   
   let sq0C = ''
@@ -721,13 +747,23 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
   let sq1P = ''
   let sq2C = ''
   let sq2P = ''
-  for(let i = 0 ; i <= 4 ; i++){
-    sq0C += '<td><a href="' + filter[i]    + '">' + filter[i] + '</a></td>\n'
-    sq0P += '<td><a href="' + filter[i+5]  + '">' + filter[i+5] + '</a></td>\n'
-    sq1C += '<td><a href="' + filter[i+10] + '">' + filter[i+10] + '</a></td>\n'
-    sq1P += '<td><a href="' + filter[i+15] + '">' + filter[i+15] + '</a></td>\n'
-    sq2C += '<td><a href="' + filter[i+20] + '">' + filter[i+20] + '</a></td>\n'
-    sq2P += '<td><a href="' + filter[i+25] + '">' + filter[i+25] + '</a></td>\n'
+  for(let i = 0 ; i < day0c.length ; i++){
+    sq0C += '<td><a href="' + day0c[i]    + '">' + day0c[i] + '</a></td>\n'
+  }
+  for(let i = 0 ; i < day0p.length ; i++){
+    sq0P += '<td><a href="' + day0p[i]    + '">' + day0p[i] + '</a></td>\n'
+  }
+  for(let i = 0 ; i < day1c.length ; i++){
+    sq1C += '<td><a href="' + day1c[i]    + '">' + day1c[i] + '</a></td>\n'
+  }
+  for(let i = 0 ; i < day1p.length ; i++){
+    sq1P += '<td><a href="' + day1p[i]    + '">' + day1p[i] + '</a></td>\n'
+  }
+  for(let i = 0 ; i < day2c.length ; i++){
+    sq2C += '<td><a href="' + day2c[i]    + '">' + day2c[i] + '</a></td>\n'
+  }
+  for(let i = 0 ; i < day2p.length ; i++){
+    sq2P += '<td><a href="' + day2p[i]    + '">' + day2p[i] + '</a></td>\n'
   }
 
   let pathtext ='<table> <tbody>';
