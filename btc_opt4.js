@@ -29,22 +29,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 let arrDDMMYY = [];
-arrDDMMYY[0] = '26-07-24';
-arrDDMMYY[1] = '02-08-24';
+arrDDMMYY[0] = '02-08-24';
+arrDDMMYY[1] = '09-08-24';
+arrDDMMYY[3] = '16-08-24';
 
 let cnt = -1;
 
-let lineCnt = [];
-lineCnt[0] = [[0,0,0,0,0],[0,0,0,0,0]];//C          
-lineCnt[1] = [[0,0,0,0,0],[0,0,0,0,0]];//P      
+let lineCnt   = [];
+lineCnt[0]    = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];//C
+lineCnt[1]    = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];//P
 
 let lineAlert = [];//5750;
-lineAlert[0] = [[0,0,0,0,0],[0,0,0,0,0]];//C 
-lineAlert[1] = [[0,0,0,0,0],[0,0,0,0,0]];//P 
+lineAlert[0]  = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];//C
+lineAlert[1]  = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];//P
 
-let arrKenri = [];
-arrKenri[0] = [[0,0,0,0,0],[0,0,0,0,0]];//C
-arrKenri[1] = [[0,0,0,0,0],[0,0,0,0,0]];//P
+let arrKenri  = [];
+arrKenri[0]   = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];//C
+arrKenri[1]   = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];//P
 
 let arrResult =[];
 arrResult = readfile0();
@@ -224,19 +225,19 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
   //権利行使価  
   let arrKenri_c = [];
   let arrKenri_p = [];
-  if(j == 0){
+  //if(j == 0){
     for(let i = 0 ; i<=4 ; i++){
-      arrKenri_c[i] = arrKenri[0][0][i] ;//call
-      arrKenri_p[i] = arrKenri[1][0][i] ;//put
+      arrKenri_c[i] = arrKenri[0][j][i] ;//call
+      arrKenri_p[i] = arrKenri[1][j][i] ;//put
     }
-
-  }else{
+  //}else{
+  /*  
     for(let i = 0 ; i<=4 ; i++){
-      arrKenri_c[i] = arrKenri[0][1][i] ;//call
-      arrKenri_p[i] = arrKenri[1][1][i] ;//put
+      arrKenri_c[i] = arrKenri[0][j][i] ;//call
+      arrKenri_p[i] = arrKenri[1][j][i] ;//put
     }
-
   }
+  */
   //権利行使価格
 
   //Call
@@ -530,56 +531,73 @@ function readfile0() {
   let lineAlert = [];
   let arrKenri  = [];
   let arrDDMMYY = [];
-  lineAlert[0] = [[0,0,0,0,0],[0,0,0,0,0]];//C ;
-  lineAlert[1] = [[0,0,0,0,0],[0,0,0,0,0]];//P ;
-  arrKenri[0]  = [[0,0,0,0,0],[0,0,0,0,0]];//C ;
-  arrKenri[1]  = [[0,0,0,0,0],[0,0,0,0,0]];//P ;
+  lineAlert[0] = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];//C
+  lineAlert[1] = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];//P
+  arrKenri[0]  = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];//C
+  arrKenri[1]  = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];//P
   try{
     let ac0 = fs.readFileSync(urlpath+"paramAlertC0.csv", 'utf-8');
     let ac1 = fs.readFileSync(urlpath+"paramAlertC1.csv", 'utf-8');
+    let ac2 = fs.readFileSync(urlpath+"paramAlertC2.csv", 'utf-8');
     let ap0 = fs.readFileSync(urlpath+"paramAlertP0.csv", 'utf-8');
     let ap1 = fs.readFileSync(urlpath+"paramAlertP1.csv", 'utf-8');
+    let ap2 = fs.readFileSync(urlpath+"paramAlertP2.csv", 'utf-8');
     let kc0 = fs.readFileSync(urlpath+"paramKenriC0.csv", 'utf-8');
     let kc1 = fs.readFileSync(urlpath+"paramKenriC1.csv", 'utf-8');
+    let kc2 = fs.readFileSync(urlpath+"paramKenriC2.csv", 'utf-8');
     let kp0 = fs.readFileSync(urlpath+"paramKenriP0.csv", 'utf-8');
     let kp1 = fs.readFileSync(urlpath+"paramKenriP1.csv", 'utf-8');
+    let kp2 = fs.readFileSync(urlpath+"paramKenriP2.csv", 'utf-8');
     let dmy = fs.readFileSync(urlpath+"paramDDMMYY.csv" , 'utf-8');
   
   
     let ac00  = ac0.split('\r')[0].split(',');
     let ac01  = ac1.split('\r')[0].split(',');
+    let ac02  = ac2.split('\r')[0].split(',');
     let ap00  = ap0.split('\r')[0].split(',');
     let ap01  = ap1.split('\r')[0].split(',');
+    let ap02  = ap2.split('\r')[0].split(',');
 
     lineAlert[0][0] = ac00.slice(0,-1);//[ac00[0],ac00[1],ac00[2],ac00[3],ac00[4]];
     lineAlert[0][1] = ac01.slice(0,-1);//[ac01[0],ac01[1],ac01[2],ac01[3],ac01[4]];
+    lineAlert[0][2] = ac02.slice(0,-1);
     lineAlert[1][0] = ap00.slice(0,-1);//[ap00[0],ap00[1],ap00[2],ap00[3],ap00[4]];
     lineAlert[1][1] = ap01.slice(0,-1);//[ap01[0],ap01[1],ap01[2],ap01[3],ap01[4]];
+    lineAlert[1][2] = ap02.slice(0,-1);
   
     let kc00 = kc0.split('\r')[0].split(',');
     let kc01 = kc1.split('\r')[0].split(',');
+    let kc02 = kc2.split('\r')[0].split(',');
     let kp00 = kp0.split('\r')[0].split(',');
     let kp01 = kp1.split('\r')[0].split(',');
+    let kp02 = kp2.split('\r')[0].split(',');
     arrKenri[0][0] = kc00.slice(0,-1);//[kc00[0],kc00[1],kc00[2],kc00[3],kc00[4]];
     arrKenri[0][1] = kc01.slice(0,-1);//[kc01[0],kc01[1],kc01[2],kc01[3],kc01[4]];
+    arrKenri[0][2] = kc02.slice(0,-1);
     arrKenri[1][0] = kp00.slice(0,-1);//[kp00[0],kp00[1],kp00[2],kp00[3],kp00[4]];
     arrKenri[1][1] = kp01.slice(0,-1);//[kp01[0],kp01[1],kp01[2],kp01[3],kp01[4]];
+    arrKenri[1][2] = kp02.slice(0,-1);
   
   
     let dmy1  = dmy.split('\r')[0].split(',');
     arrDDMMYY[0]    = dmy1[0];
     arrDDMMYY[1]    = dmy1[1];
+    arrDDMMYY[2]    = dmy1[2];
 
 
 
     console.error(['read paramAlertC0.csv',ac0],'  =>',['AlertC0',lineAlert[0][0]]);
     console.error(['read paramAlertC1.csv',ac1],'  =>',['AlertC1',lineAlert[0][1]]);
+    console.error(['read paramAlertC2.csv',ac2],'  =>',['AlertC2',lineAlert[0][2]]);
     console.error(['read paramAlertP0.csv',ap0],'  =>',['AlertP0',lineAlert[1][0]]);
-    console.error(['read paramAlertC1.csv',ap1],'  =>',['AlertP1',lineAlert[1][1]]);
-    console.error(['read paramKenriC0.csv',kc0],'        =>',['KenriC0',arrKenri[0][0]]);
-    console.error(['read paramKenriC1.csv',kc1],'        =>',['KenriC1',arrKenri[0][1]]);
-    console.error(['read paramKenriP0.csv',kp0],'        =>',['KenriP0',arrKenri[1][0]]);
-    console.error(['read paramKenriP1.csv',kp1],'        =>',['KenriP1',arrKenri[1][1]]);
+    console.error(['read paramAlertP1.csv',ap1],'  =>',['AlertP1',lineAlert[1][1]]);
+    console.error(['read paramAlertP2.csv',ap2],'  =>',['AlertP2',lineAlert[1][2]]);
+    console.error(['read paramKenriC0.csv',kc0],'  =>',['KenriC0',arrKenri[0][0]]);
+    console.error(['read paramKenriC1.csv',kc1],'  =>',['KenriC1',arrKenri[0][1]]);
+    console.error(['read paramKenriC2.csv',kc2],'  =>',['KenriC2',arrKenri[0][2]]);
+    console.error(['read paramKenriP0.csv',kp0],'  =>',['KenriP0',arrKenri[1][0]]);
+    console.error(['read paramKenriP1.csv',kp1],'  =>',['KenriP1',arrKenri[1][1]]);
+    console.error(['read paramKenriP2.csv',kp2],'  =>',['KenriP2',arrKenri[1][2]]);
     console.error(['read paramDDMMYY.csv ',dmy],'=>',['DDMMYY ',arrDDMMYY]);
 
   
@@ -596,6 +614,7 @@ function writefile0(lineAlert,arrKenri,arrDDMMYY,req) {
 
   arrDDMMYY[0] = Object.values(req.body)[0][0];
   arrDDMMYY[1] = Object.values(req.body)[0][1];
+  arrDDMMYY[2] = Object.values(req.body)[0][2];
 
   for(let i = 0 ; i <= 4 ; i++){
      arrKenri[0][0][i] = Object.values(req.body)[1][i]
@@ -606,64 +625,83 @@ function writefile0(lineAlert,arrKenri,arrDDMMYY,req) {
     lineAlert[0][1][i] = Object.values(req.body)[6][i]
      arrKenri[1][1][i] = Object.values(req.body)[7][i]
     lineAlert[1][1][i] = Object.values(req.body)[8][i]
+     arrKenri[0][2][i] = Object.values(req.body)[9][i]
+    lineAlert[0][2][i] = Object.values(req.body)[10][i]
+     arrKenri[1][2][i] = Object.values(req.body)[11][i]
+    lineAlert[1][2][i] = Object.values(req.body)[12][i]
   }
 
 
-  let lac0 = '';
-  let lac1 = '';
-  let kec0 = '';
-  let kec1 = '';
-  for(let j = 0 ; j <= 1 ; j++){
-    for(let i = 0 ; i <= 4 ; i++){
-      if(j == 0){
-        lac0 += lineAlert[0][j][i] + ','
-        kec0 += arrKenri[0][j][i]  + ','  
-      }else{
-        lac1 += lineAlert[0][j][i] + ','
-        kec1 += arrKenri[0][j][i]  + ','  
+  let la = [];
+  let ke = [];
+  la[0] = ['','','']
+  la[1] = ['','','']
+  ke[0] = ['','','']
+  ke[1] = ['','','']
+  for(let k = 0 ; k <= 1 ; k++){//Call PUT
+    for(let j = 0 ; j <= 2 ; j++){//DAY
+      for(let i = 0 ; i <= 4 ; i++){//
+        la[k][j] += lineAlert[k][j][i] + ','
+        ke[k][j] +=  arrKenri[k][j][i] + ','  
       }
     }
-    
   }
-
+/*
   let lap0 = '';
   let lap1 = '';
+  let lap2 = '';
   let kep0 = '';
   let kep1 = '';
-  for(let j = 0 ; j <= 1 ; j++){
+  let kep2 = '';
+  for(let j = 0 ; j <= 2 ; j++){
     for(let i = 0 ; i <= 4 ; i++){
       if(j == 0){
         lap0 += lineAlert[1][j][i] + ','
-        kep0 += arrKenri[1][j][i]  + ','  
-      }else{
+        kep0 +=  arrKenri[1][j][i] + ','  
+      }else if(j == 1){
         lap1 += lineAlert[1][j][i] + ','
-        kep1 += arrKenri[1][j][i]  + ','  
-
+        kep1 +=  arrKenri[1][j][i] + ','  
+      }else{
+        lap2 += lineAlert[1][j][i] + ','
+        kep2 +=  arrKenri[1][j][i] + ','  
       }
     }
     
   }
+*/
+  fs.writeFileSync(urlpath+"paramDDMMYY.csv" , arrDDMMYY[0]+','+arrDDMMYY[1]+','+arrDDMMYY[2]);
+  fs.writeFileSync(urlpath+"paramAlertC0.csv", la[0][0]);
+  fs.writeFileSync(urlpath+"paramAlertC1.csv", la[0][1]);
+  fs.writeFileSync(urlpath+"paramAlertC2.csv", la[0][2]);
 
-  fs.writeFileSync(urlpath+"paramDDMMYY.csv" , arrDDMMYY[0]+','+arrDDMMYY[1]);
-  fs.writeFileSync(urlpath+"paramAlertC0.csv", lac0);
-  fs.writeFileSync(urlpath+"paramAlertC1.csv", lac1);
-  fs.writeFileSync(urlpath+"paramAlertP0.csv", lap0);
-  fs.writeFileSync(urlpath+"paramAlertP1.csv", lap1);
-  fs.writeFileSync(urlpath+"paramKenriC0.csv", kec0);
-  fs.writeFileSync(urlpath+"paramKenriC1.csv", kec1);
-  fs.writeFileSync(urlpath+"paramKenriP0.csv", kep0);
-  fs.writeFileSync(urlpath+"paramKenriP1.csv", kep1);
+  fs.writeFileSync(urlpath+"paramAlertP0.csv", la[1][0]);
+  fs.writeFileSync(urlpath+"paramAlertP1.csv", la[1][1]);
+  fs.writeFileSync(urlpath+"paramAlertP2.csv", la[1][2]);
+
+  fs.writeFileSync(urlpath+"paramKenriC0.csv", ke[0][0]);
+  fs.writeFileSync(urlpath+"paramKenriC1.csv", ke[0][1]);
+  fs.writeFileSync(urlpath+"paramKenriC2.csv", ke[0][2]);
+
+  fs.writeFileSync(urlpath+"paramKenriP0.csv", ke[1][0]);
+  fs.writeFileSync(urlpath+"paramKenriP1.csv", ke[1][1]);
+  fs.writeFileSync(urlpath+"paramKenriP2.csv", ke[1][2]);
 
 
-  console.error(["write paramDDMMYY.csv ", arrDDMMYY[0]+','+arrDDMMYY[1]])
-  console.error(["write paramKenriC0.csv", kec0])
-  console.error(["write paramAlertC0.csv", lac0])
-  console.error(["write paramKenriP0.csv", kep0])
-  console.error(["write paramAlertP0.csv", lap0])
-  console.error(["write paramKenriC1.csv", kec1])
-  console.error(["write paramAlertC1.csv", lac1])
-  console.error(["write paramKenriP1.csv", kep1])
-  console.error(["write paramAlertP1.csv", lap1])
+  console.error(["write paramDDMMYY.csv ", arrDDMMYY[0]+','+arrDDMMYY[1]+','+arrDDMMYY[2]])
+  console.error(["write paramKenriC0.csv", ke[0][0]])
+  console.error(["write paramAlertC0.csv", la[0][0]])
+  console.error(["write paramKenriP0.csv", ke[1][0]])
+  console.error(["write paramAlertP0.csv", la[1][0]])
+
+  console.error(["write paramKenriC1.csv", ke[0][1]])
+  console.error(["write paramAlertC1.csv", la[0][1]])
+  console.error(["write paramKenriP1.csv", ke[1][1]])
+  console.error(["write paramAlertP1.csv", la[1][1]])
+
+  console.error(["write paramKenriC2.csv", ke[0][2]])
+  console.error(["write paramAlertC2.csv", la[0][2]])
+  console.error(["write paramKenriP2.csv", ke[1][2]])
+  console.error(["write paramAlertP2.csv", la[1][2]])
 
   console.error(" END writefile0(lineAlert,arrKenri,arrDDMMYY,req) ")
 
@@ -681,11 +719,15 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
   let sq0P = ''
   let sq1C = ''
   let sq1P = ''
+  let sq2C = ''
+  let sq2P = ''
   for(let i = 0 ; i <= 4 ; i++){
     sq0C += '<td><a href="' + filter[i]    + '">' + filter[i] + '</a></td>\n'
     sq0P += '<td><a href="' + filter[i+5]  + '">' + filter[i+5] + '</a></td>\n'
     sq1C += '<td><a href="' + filter[i+10] + '">' + filter[i+10] + '</a></td>\n'
     sq1P += '<td><a href="' + filter[i+15] + '">' + filter[i+15] + '</a></td>\n'
+    sq2C += '<td><a href="' + filter[i+20] + '">' + filter[i+20] + '</a></td>\n'
+    sq2P += '<td><a href="' + filter[i+25] + '">' + filter[i+25] + '</a></td>\n'
   }
 
   let pathtext ='<table> <tbody>';
@@ -695,6 +737,9 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
   pathtext += '<tr></tr><tr><td>'+arrDDMMYY[1]+'</td></tr><tr></tr>\n'
   pathtext += '<tr>\n' + sq1C + '</tr>\n'
   pathtext += '<tr>\n' + sq1P + '</tr>\n'
+  pathtext += '<tr></tr><tr><td>'+arrDDMMYY[2]+'</td></tr><tr></tr>\n'
+  pathtext += '<tr>\n' + sq2C + '</tr>\n'
+  pathtext += '<tr>\n' + sq2P + '</tr>\n'
   pathtext += '</tbody></table>\n';
 
   //console.log(pathtext)
@@ -707,6 +752,10 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
   let sq1Ca =''
   let sq1Pk =''
   let sq1Pa =''
+  let sq2Ck =''
+  let sq2Ca =''
+  let sq2Pk =''
+  let sq2Pa =''
   
   for(let i = 0 ; i <= 4 ; i++){
     sq0Ck += '<input type="text" size="1" name="kenriC0" value="'+ arrKenri[0][0][i]+'">\n'
@@ -717,6 +766,10 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
     sq1Ca += '<input type="text" size="2" name="alertC1" value="'+lineAlert[0][1][i]+'">\n'
     sq1Pk += '<input type="text" size="1" name="kenriP1" value="'+ arrKenri[1][1][i]+'">\n'
     sq1Pa += '<input type="text" size="2" name="alertP1" value="'+lineAlert[1][1][i]+'">\n'
+    sq2Ck += '<input type="text" size="1" name="kenriC2" value="'+ arrKenri[0][2][i]+'">\n'
+    sq2Ca += '<input type="text" size="2" name="alertC2" value="'+lineAlert[0][2][i]+'">\n'
+    sq2Pk += '<input type="text" size="1" name="kenriP2" value="'+ arrKenri[1][2][i]+'">\n'
+    sq2Pa += '<input type="text" size="2" name="alertP2" value="'+lineAlert[1][2][i]+'">\n'
   }
 
   let htmltag =
@@ -735,7 +788,12 @@ function maketag(lineAlert,arrKenri,arrDDMMYY,urlpath){
     + '<input type="text" size="4" name="ddmmyy0" value="'+arrDDMMYY[1]+'">\n'
     + '<br>ＣＡＬＬ 権利行使価格 : ' + sq1Ck + ' Alert ' + sq1Ca
     + '<br>ＰＵＴ　 権利行使価格 : ' + sq1Pk + ' Alert ' + sq1Pa
-    
+
+    + '<br>ＳＱ日２ : \n'
+    + '<input type="text" size="4" name="ddmmyy0" value="'+arrDDMMYY[2]+'">\n'
+    + '<br>ＣＡＬＬ 権利行使価格 : ' + sq2Ck + ' Alert ' + sq2Ca
+    + '<br>ＰＵＴ　 権利行使価格 : ' + sq2Pk + ' Alert ' + sq2Pa
+
     + '<br><input type="submit" value="送信！">\n'
     + '</form>\n'
     ;
