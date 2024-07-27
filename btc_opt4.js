@@ -172,39 +172,48 @@ for(let loop = 0 ; loop < 2 ; loop++){
       //日付をクリック
       await page.waitForTimeout(500);
       //await page.getByText(arrDDMMYY[j]).click();
-      await page.locator('._delivery-time_nlm51_18', { hasText: arrDDMMYY[j] }).click();
-      await page.waitForTimeout(2000);
+      let test1 = await page.$('._delivery-time_nlm51_18 ');
+      if(test1 != null){
+        try{
+          await page.locator('._delivery-time_nlm51_18', { hasText: arrDDMMYY[j] }).click();
+          await page.waitForTimeout(2000);
+    
+          //日付
+          let ddmmyy = arrDDMMYY[j]; 
+          //console.error("ddmmyy " + ddmmyy);
+    
+          //原資産
+          let genshi = "0.00";
+          genshi = (await page.locator('//*[@id="quote_list"]').innerText()).split(' ')[3];
+    
+          if(genshi == "0.00"){
+            console.error("genshi err");
+            await page.waitForTimeout(500);
+            genshi = (await page.locator('//*[@id="quote_list"]').innerText()).split(' ')[3];
+          }
+          if(genshi == "0.00"){
+            break;
+          }
+    
+          let dd = ddmmyy.split('-')[0]; 
+          let mm = ddmmyy.split('-')[1]; 
+          let yy = ddmmyy.split('-')[2];
+          let arrMM = [];
+          arrMM = ['','JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
+          mm = arrMM[parseInt(mm)];
+          dd = parseInt(dd);
+    
+          console.error("");
+          console.error(["dd-mm-yy:", ddmmyy , dd+mm+yy],[" genshisan:" + genshi]);
+          console.error("");
+    
+          await callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenri);
+    
+        }catch(e){
+          console.error( 'for(let j = 0 ; j < arrDDMMYY.length ; j++) err : ' + e.message );
+        }
 
-      //日付
-      let ddmmyy = arrDDMMYY[j]; 
-      //console.error("ddmmyy " + ddmmyy);
-
-      //原資産
-      let genshi = "0.00";
-      genshi = (await page.locator('//*[@id="quote_list"]').innerText()).split(' ')[3];
-
-      if(genshi == "0.00"){
-        console.error("genshi err");
-        await page.waitForTimeout(500);
-        genshi = (await page.locator('//*[@id="quote_list"]').innerText()).split(' ')[3];
       }
-      if(genshi == "0.00"){
-        break;
-      }
-
-      let dd = ddmmyy.split('-')[0]; 
-      let mm = ddmmyy.split('-')[1]; 
-      let yy = ddmmyy.split('-')[2];
-      let arrMM = [];
-      arrMM = ['','JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
-      mm = arrMM[parseInt(mm)];
-      dd = parseInt(dd);
-
-      console.error("");
-      console.error(["dd-mm-yy:", ddmmyy , dd+mm+yy],[" genshisan:" + genshi]);
-      console.error("");
-
-      await callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenri);
       
     }//for(let j = 0 ; j < arrDDMMYY.length ; j++){
   }//for(let l = 0 ; l < 10 ; l++){
@@ -321,11 +330,15 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
              + genshi +',<font color="red">[,'+ sell +',]</font>,'+ mark +','+ buy +','+ vola +',' 
              + meigara  +  ',<br>\n'; 
         
-        fs.appendFileSync( PATH , resC );
-        let sorted = sortFunc(PATH);
-        fs.writeFileSync(PATH, sorted,{flag: "w"}); 
-
-        fs.appendFileSync( urlpath + 'zdownload.html', resC );
+        if(isNaN(sell) != true){
+          fs.appendFileSync( PATH , resC );
+          let sorted = sortFunc(PATH);
+          fs.writeFileSync(PATH, sorted,{flag: "w"}); 
+  
+          fs.appendFileSync( urlpath + 'zdownload.html', resC );  
+        }else{
+          console.error([meigara , 'sell isNaN'])
+        }     
 
         await page.waitForTimeout(500);
 
@@ -445,17 +458,21 @@ async function callput(page,dd,mm,yy,j,arrDDMMYY,l,cnt,lineCnt,lineAlert,arrKenr
              + genshi +',<font color="red">[,'+ sell +',]</font>,'+ mark +','+ buy +','+ vola +',' 
              + meigara  +  ',<br>\n'; 
 
-        fs.appendFileSync( PATH, resC );
-        let sorted = sortFunc(PATH);
-        fs.writeFileSync(PATH, sorted,{flag: "w"}); 
+        if(isNaN(sell) != true){
 
-        fs.appendFileSync( urlpath + 'zdownload.html', resC );
-        if(i == 4){
-          let sorted1 = sortFunc(urlpath + 'zdownload.html');
-          //console.log(sorted1)
-          fs.writeFileSync(urlpath + 'zdownload.html', sorted1,{flag: "w"});   
+          fs.appendFileSync( PATH, resC );
+          let sorted = sortFunc(PATH);
+          fs.writeFileSync(PATH, sorted,{flag: "w"}); 
+
+          fs.appendFileSync( urlpath + 'zdownload.html', resC );
+          if(i == 4){
+            let sorted1 = sortFunc(urlpath + 'zdownload.html');
+            //console.log(sorted1)
+            fs.writeFileSync(urlpath + 'zdownload.html', sorted1,{flag: "w"});   
+          }
+        }else{
+          console.error([meigara , 'sell isNaN'])
         }
-
 
         await page.waitForTimeout(500);
 
